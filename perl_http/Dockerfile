@@ -1,4 +1,4 @@
-FROM 356438515751.dkr.ecr.us-east-1.amazonaws.com/centos:master
+FROM centos:7
 
 MAINTAINER Derek DeJonghe "mittendevelopment@gmail.com"
 
