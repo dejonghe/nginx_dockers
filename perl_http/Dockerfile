@@ -50,18 +50,17 @@ RUN cd /opt && \
 
 # Install NGINX
 RUN cd opt && \
-    wget http://nginx.org/download/nginx-1.11.4.tar.gz && \
-    tar zxf nginx-1.11.4.tar.gz && \
-    cd nginx-1.11.4 && \
+    wget http://nginx.org/download/nginx-${VER_NGINX}.tar.gz && \
+    tar zxf nginx-${VER_NGINX}.tar.gz && \
+    cd nginx-${VER_NGINX} && \
     ./configure \
         --sbin-path=/usr/local/nginx/nginx \ 
         --conf-path=/etc/nginx/nginx.conf \ 
         --pid-path=/usr/local/nginx/nginx.pid \ 
-        --with-pcre=../pcre-8.39 \ 
-        --with-zlib=../zlib-1.2.8 \ 
+        --with-pcre=../pcre-${VER_PCRE} \ 
+        --with-zlib=../zlib-${VER_ZLIB} \ 
         --with-http_ssl_module \ 
         --with-stream \ 
-        --with-http_ssl_module \
         --with-http_perl_module \
     && \
     make && \
