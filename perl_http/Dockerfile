@@ -71,4 +71,5 @@ RUN chmod 666 /var/www/index.html
 
 
 EXPOSE 80
-CMD ["nginx"]
+
+CMD ["nginx", "-g", "daemon off;"
