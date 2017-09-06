@@ -2,6 +2,11 @@ FROM centos:7
 
 MAINTAINER Derek DeJonghe "mittendevelopment@gmail.com"
 
+ENV VER_NGINX=1.13.5
+ENV VER_PCRE=8.39
+ENV VER_ZLIB=1.2.11
+ENV VER_SSL=1.0.2l
+
 RUN yum -y update && \
     yum -y install gcc \
     gcc-c++ \
@@ -13,31 +18,35 @@ RUN yum -y update && \
     wget
 
 # Install pcre
-RUN cd opt && \
-    wget http://ftp.exim.org/pub/pcre/pcre-8.39.tar.gz && \
-    tar -zxf pcre-8.39.tar.gz && \
-    cd pcre-8.39 && \
+RUN cd /opt && \
+    wget http://ftp.exim.org/pub/pcre/pcre-${VER_PCRE}.tar.gz && \
+    tar -zxf pcre-${VER_PCRE}.tar.gz && \
+    cd pcre-${VER_PCRE} && \
     ./configure && \
     make && \
-    make install
+    make install && \
+    rm ../pcre-${VER_PCRE}.tar.gz
     
 # Install zlib
-RUN cd opt && \
-    wget http://zlib.net/zlib-1.2.8.tar.gz && \
-    tar -zxf zlib-1.2.8.tar.gz && \
-    cd zlib-1.2.8 && \
+RUN cd /opt && \
+    wget http://zlib.net/zlib-${VER_ZLIB}.tar.gz && \
+    tar -zxf zlib-${VER_ZLIB}.tar.gz && \
+    cd zlib-${VER_ZLIB} && \
     ./configure && \
     make && \
-    make install
+    make install && \
+    rm ../zlib-${VER_ZLIB}.tar.gz
 
 # Install openSSL 
-RUN cd opt && \
-    wget http://www.openssl.org/source/openssl-1.0.2f.tar.gz && \
-    tar -zxf openssl-1.0.2f.tar.gz && \
-    cd openssl-1.0.2f && \
+RUN cd /opt && \
+    wget http://www.openssl.org/source/openssl-${VER_SSL}.tar.gz && \
+    tar -zxf openssl-${VER_SSL}.tar.gz && \
+    cd openssl-${VER_SSL} && \
     ./config && \
     make && \
-    make install 
+    make install && \
+    rm ../openssl-${VER_SSL}.tar.gz
+
 
 # Install NGINX
 RUN cd opt && \
