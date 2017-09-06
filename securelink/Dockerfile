@@ -1,6 +1,11 @@
-FROM 356438515751.dkr.ecr.us-east-1.amazonaws.com/centos:master
+FROM centos:7
 
 MAINTAINER Derek DeJonghe "mittendevelopment@gmail.com"
+
+ENV VER_NGINX=1.13.5
+ENV VER_PCRE=8.39
+ENV VER_ZLIB=1.2.11
+ENV VER_SSL=1.0.2l
 
 RUN yum -y update && \
     yum -y install gcc \
@@ -13,45 +18,47 @@ RUN yum -y update && \
 
 # Install pcre
 RUN cd opt && \
-    wget http://ftp.exim.org/pub/pcre/pcre-8.39.tar.gz && \
-    tar -zxf pcre-8.39.tar.gz && \
-    cd pcre-8.39 && \
+    wget http://ftp.exim.org/pub/pcre/pcre-${VER_PCRE}.tar.gz && \
+    tar -zxf pcre-${VER_PCRE}.tar.gz && \
+    rm pcre-${VER_PCRE}.tar.gz && \
+    cd pcre-${VER_PCRE} && \
     ./configure && \
     make && \
     make install
     
 # Install zlib
 RUN cd opt && \
-    wget http://zlib.net/zlib-1.2.8.tar.gz && \
-    tar -zxf zlib-1.2.8.tar.gz && \
-    cd zlib-1.2.8 && \
+    wget http://zlib.net/zlib-${VER_ZLIB}.tar.gz && \
+    tar -zxf zlib-${VER_ZLIB}.tar.gz && \
+    rm zlib-${VER_ZLIB}.tar.gz && \
+    cd zlib-${VER_ZLIB} && \
     ./configure && \
     make && \
     make install
 
 # Install openSSL 
 RUN cd opt && \
-    wget http://www.openssl.org/source/openssl-1.0.2f.tar.gz && \
-    tar -zxf openssl-1.0.2f.tar.gz && \
-    cd openssl-1.0.2f && \
+    wget http://www.openssl.org/source/openssl-${VER_SSL}.tar.gz && \
+    tar -zxf openssl-${VER_SSL}.tar.gz && \
+    rm openssl-${VER_SSL}.tar.gz && \
+    cd openssl-${VER_SSL} && \
     ./config && \
     make && \
     make install 
 
 # Install NGINX
 RUN cd opt && \
-    wget http://nginx.org/download/nginx-1.11.4.tar.gz && \
-    tar zxf nginx-1.11.4.tar.gz && \
-    cd nginx-1.11.4 && \
+    wget http://nginx.org/download/nginx-${VER_NGINX}.tar.gz && \
+    tar zxf nginx-${VER_NGINX}.tar.gz && \
+    cd nginx-${VER_NGINX} && \
     ./configure \
         --sbin-path=/usr/local/nginx/nginx \ 
         --conf-path=/etc/nginx/nginx.conf \ 
         --pid-path=/usr/local/nginx/nginx.pid \ 
-        --with-pcre=../pcre-8.39 \ 
-        --with-zlib=../zlib-1.2.8 \ 
+        --with-pcre=../pcre-${VER_PCRE} \ 
+        --with-zlib=../zlib-${VER_ZLIB} \ 
         --with-http_ssl_module \ 
         --with-stream \ 
-        --with-http_ssl_module \
         --with-http_secure_link_module \ 
     && \
     make && \
@@ -70,4 +77,5 @@ RUN chmod 666 /var/www/index.html
 
 
 EXPOSE 80
-CMD ["nginx"]
+
+CMD ["nginx", "-g", "daemon off;"]
