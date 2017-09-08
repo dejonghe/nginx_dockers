@@ -1,2 +1,8 @@
 {
-  "type": "
+  "type": "python",
+  "workers": 2,
+  "path": "/var/app/",
+  "module": "wsgi",
+  "user": "root",
+  "group": "root"
+}  
