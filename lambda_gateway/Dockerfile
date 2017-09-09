@@ -61,6 +61,9 @@ RUN cd /tmp && \
 
 RUN ln -s /usr/local/openresty/nginx/sbin/nginx /usr/local/bin/nginx
 
-ADD nginx_conf/ /usr/local/openresty/nginx/conf 
+ADD nginx-conf/ /usr/local/openresty/nginx/conf 
 
-# For now if you need to add in lua scripts add to here /usr/local/openresty/site/lualib 
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
