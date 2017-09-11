@@ -1,0 +1,26 @@
+{% for k,v in data['info'].items() %}
+# {{ k }}: {{ v }}
+{% endfor %}
+
+server {
+    listen 80 default_server;
+    server_name _;
+
+    {% for path, info in data['paths'].items() %}
+    location {{ path }} {
+      {% for method, specs in info.items() %}
+        {% for param in specs['parameters'] %}
+          {% if param['required'] %}
+            if ($args !~ "{{ param['name'] }}=(.+)") {
+                return 400 "{{ param['name'] }} parameter required";
+            }
+          {% endif %}
+        {% endfor %}
+        {% if info['x-amazon-apigateway-any-method']['x-amazon-apigateway-integration'] is defined %}       
+        set $aws_function {{ info['x-amazon-apigateway-any-method']['x-amazon-apigateway-integration']['uri'] }};
+        {% endif %}
+        content_by_lua_file conf/conf.d/lambda_invoker.lua;
+      {% endfor %}
+    }
+    {% endfor %}
+}
