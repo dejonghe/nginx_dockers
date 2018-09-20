@@ -1,0 +1,2 @@
+deb http://nginx.org/packages/mainline/debian stretch nginx
+deb-src http://nginx.org/packages/mainline/debian stretch nginx

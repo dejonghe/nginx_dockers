@@ -28,7 +28,7 @@ def create_index_html():
                     print(uri)
                     uri_spl = uri.split('/')[3]
                     print(uri_spl)
-                    swag[path]['x-amazon-apigateway-any-method']['x-amazon-apigateway-integration'] = uri_spl
+                    swag['paths'][path]['x-amazon-apigateway-any-method']['x-amazon-apigateway-integration'] = uri_spl
     context = {
         'data': swag
     }
