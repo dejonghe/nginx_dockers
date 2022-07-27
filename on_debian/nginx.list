@@ -1,2 +1,2 @@
-deb http://nginx.org/packages/mainline/debian stretch nginx
-deb-src http://nginx.org/packages/mainline/debian stretch nginx
+deb http://nginx.org/packages/mainline/debian/ bullseye nginx
+deb-src http://nginx.org/packages/mainline/debian/ bullseye nginx
