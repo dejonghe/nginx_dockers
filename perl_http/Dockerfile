@@ -62,6 +62,8 @@ RUN cd opt && \
         --with-http_ssl_module \ 
         --with-stream \ 
         --with-http_perl_module \
+        --with-stream_realip_module \
+        --with-http_geoip_module \
     && \
     make && \
     make install && \

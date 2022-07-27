@@ -37,24 +37,29 @@ local resp_tab = cjson.decode(resp)
 ngx.log(ngx.WARN,type(resp_tab))
 
 
-ngx.log(ngx.WARN,type(status))
-ngx.log(ngx.WARN,type(resp_tab["statusCode"]))
-ngx.log(ngx.WARN,resp_tab["statusCode"])
+if resp_tab["errorMessage"] then 
+  ngx.say(resp) 
+else
 
-ngx.status = status
+  ngx.log(ngx.WARN,type(status))
+  ngx.log(ngx.WARN,type(resp_tab["statusCode"]))
+  ngx.log(ngx.WARN,resp_tab["statusCode"])
 
--- parse the response like api gate way would
-local body = resp_tab["body"]
-ngx.log(ngx.WARN,type(body))
-
-ngx.log(ngx.WARN,type(resp_tab["headers"]))
-for header, value in pairs(resp_tab["headers"]) do 
-    ngx.log(ngx.WARN,type(header))
-    ngx.log(ngx.WARN,header)
-    ngx.log(ngx.WARN,type(value))
-    ngx.log(ngx.WARN,value)
-     
-    ngx.header[header] = value
+  ngx.status = status
+  
+  -- parse the response like api gate way would
+  local body = resp_tab["body"]
+  ngx.log(ngx.WARN,type(body))
+  
+  ngx.log(ngx.WARN,type(resp_tab["headers"]))
+  for header, value in pairs(resp_tab["headers"]) do 
+      ngx.log(ngx.WARN,type(header))
+      ngx.log(ngx.WARN,header)
+      ngx.log(ngx.WARN,type(value))
+      ngx.log(ngx.WARN,value)
+       
+      ngx.header[header] = value
+  end
+  
+  ngx.say(body)
 end
-
-ngx.say(body)
